@@ -15,18 +15,13 @@ export default class Pokedex extends Component {
       }
 
 
-     getPokemon = (url) => {
-        fetch(url)
-            .then(res => res.json())
-            .then(data => {
-                this.props.updateParent({pokemon: [data.name, data.id, data.types]});
-        })
-        .catch(err => alert(err.message))
+     getPokemon = (pokemon) => {
+        this.props.updateParent({pokemon});
     }
 
     handleFilter = (event) => {
         this.setState({searched: event.target.value})
-        const newArray = this.props.pokemons.filter((pokemon) =>pokemon.name.includes(this.state.searched))
+        const newArray = this.props.pokemons.filter((pokemon) =>pokemon.name.toLowerCase().startsWith(this.state.searched))
         this.setState({filterPokemons: newArray})
     }
 
@@ -46,7 +41,7 @@ export default class Pokedex extends Component {
                 </form>
                 <div className="pokeList">
                     {filterPokemons.map(pokemon => (
-                    <p key={pokemon.name} onClick={() => this.getPokemon(pokemon.url)} className="pokeOption">{pokemon.name}</p>
+                    <p key={pokemon.name} onClick={() => this.getPokemon(pokemon)} className="pokeOption">{pokemon.name}</p>
                     ))}
                 </div>
             </div>
